@@ -13,15 +13,23 @@ const Victory = ({ player, onRestart }: VictoryProps) => {
       onClick={onRestart}
       tabIndex={0}
     >
-      {/* 3D grid background */}
+      {/* Enhanced 3D grid background */}
       <div className="absolute inset-0">
-        <div className="absolute w-full h-full bg-[linear-gradient(transparent_0%,_rgba(0,_255,_255,_0.1)_10%,_rgba(0,_255,_255,_0.1)_90%,_transparent_100%)] bg-[length:40px_40px]"></div>
-        <div className="absolute w-full h-full bg-[linear-gradient(90deg,_transparent_0%,_rgba(0,_255,_255,_0.1)_10%,_rgba(0,_255,_255,_0.1)_90%,_transparent_100%)] bg-[length:40px_40px]"></div>
+        <div className="absolute w-full h-full bg-[linear-gradient(transparent_0%,_rgba(0,_255,_255,_0.1)_10%,_rgba(0,_255,_255,_0.1)_90%,_transparent_100%)] bg-[length:40px_40px]"
+             style={{
+               transform: "perspective(1000px) rotateX(60deg) translateZ(-100px) scale(2)",
+               transformOrigin: "center center" 
+             }}></div>
+        <div className="absolute w-full h-full bg-[linear-gradient(90deg,_transparent_0%,_rgba(0,_255,_255,_0.1)_10%,_rgba(0,_255,_255,_0.1)_90%,_transparent_100%)] bg-[length:40px_40px]"
+             style={{
+               transform: "perspective(1000px) rotateX(60deg) translateZ(-100px) scale(2)",
+               transformOrigin: "center center"
+             }}></div>
       </div>
       
       {/* Light beams */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 3 }).map((_, i) => (
+        {Array.from({ length: 5 }).map((_, i) => (
           <div 
             key={i}
             className="absolute bg-cyan-500/20 blur-lg"
@@ -29,17 +37,17 @@ const Victory = ({ player, onRestart }: VictoryProps) => {
               width: '150px',
               height: '100vh',
               top: '0',
-              left: `${25 + i * 25}%`,
-              transform: 'rotate(15deg) translateY(-10%)',
+              left: `${15 + i * 17}%`,
+              transform: 'rotate(15deg) translateY(-10%) translateZ(20px)',
               animation: `pulse ${3 + i}s infinite alternate ease-in-out`,
             }}
           ></div>
         ))}
       </div>
       
-      {/* Floating celebration symbols */}
+      {/* Floating celebration symbols with 3D depth */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 30 }).map((_, i) => (
+        {Array.from({ length: 50 }).map((_, i) => (
           <div 
             key={i}
             className="absolute math-symbol text-yellow-300 opacity-30"
@@ -49,11 +57,12 @@ const Victory = ({ player, onRestart }: VictoryProps) => {
               left: `${Math.random() * 100}%`,
               animation: `float ${Math.random() * 8 + 5}s infinite ease-in-out`,
               animationDelay: `${Math.random() * 5}s`,
-              transform: `rotate(${Math.random() * 360}deg)`,
+              transform: `rotate(${Math.random() * 360}deg) translateZ(${Math.random() * 100}px)`,
+              opacity: `${Math.random() * 0.4 + 0.2}`,
               textShadow: '0 0 10px rgba(255, 255, 0, 0.7)'
             }}
           >
-            {['π', '∑', '∫', '∆', '∏', '=', '+'][Math.floor(Math.random() * 7)]}
+            {['π', '∑', '∫', '∆', '∏', '=', '+', '1', '2', '3'][Math.floor(Math.random() * 10)]}
           </div>
         ))}
       </div>
@@ -69,8 +78,25 @@ const Victory = ({ player, onRestart }: VictoryProps) => {
       <div className="relative mb-10">
         <div className="absolute inset-0 blur-xl bg-cyan-500/30 rounded-xl transform scale-110"></div>
         <p className="text-2xl md:text-3xl text-yellow-300 relative z-10 px-8 py-4 rounded-xl bg-blue-800/50 border border-cyan-500"
-           style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.5)' }}>
+           style={{ 
+             textShadow: '0 0 10px rgba(255, 255, 0, 0.5)',
+             transform: 'perspective(500px) rotateX(5deg)'
+           }}>
           You have restored the Grand Equation!
+        </p>
+      </div>
+
+      <div className="relative mb-10">
+        <div className="absolute inset-0 blur-xl bg-cyan-500/30 rounded-xl transform scale-110"></div>
+        <p className="text-xl md:text-2xl text-white relative z-10 px-8 py-4 rounded-xl bg-blue-800/50 border border-cyan-500"
+           style={{ 
+             textShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
+             transform: 'perspective(500px) rotateX(5deg)'
+           }}>
+          The tear in reality has been mended. You've returned to your dorm room,<br/>
+          your math assignment now showing a perfect score.<br/>
+          Only a lingering whisper reminds you of the adventure.<br/><br/>
+          <span className="text-yellow-200 italic">"Remember the power of numbers. They are never just symbols."</span>
         </p>
       </div>
       
@@ -86,13 +112,13 @@ const Victory = ({ player, onRestart }: VictoryProps) => {
         Press any key to play again, or ESC to quit.
       </p>
       
-      {/* Grand Equation visual */}
+      {/* Grand Equation visual with enhanced 3D */}
       <div className="absolute bottom-10 w-full flex justify-center">
         <div className="text-xl md:text-3xl text-cyan-400"
              style={{
                fontFamily: 'monospace',
                textShadow: '0 0 10px rgba(0, 255, 255, 0.7)',
-               transform: 'perspective(500px) rotateX(5deg)',
+               transform: 'perspective(500px) rotateX(5deg) translateZ(30px)',
              }}>
           ∫<span className="text-yellow-300">π</span>dx = <span className="text-green-400">∑</span><sub>n=1</sub><sup>∞</sup><span className="text-pink-400">(−1)<sup>n+1</sup></span>/<span className="text-orange-400">n<sup>2</sup></span>
         </div>
