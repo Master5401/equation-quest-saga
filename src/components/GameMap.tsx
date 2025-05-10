@@ -19,19 +19,15 @@ const GameMap = ({ level, player, timeElapsed }: GameMapProps) => {
   const offsetY = Math.max(50, (600 - mapHeight) / 2);
 
   return (
-    <div className="relative" style={{ 
+    <div className="relative font-mono" style={{ 
       width: `${mapWidth}px`, 
       height: `${mapHeight}px`,
       margin: '0 auto',
-      transformStyle: 'preserve-3d',
-      perspective: '1000px',
-      transform: 'rotateX(5deg)'
     }}>
-      {/* Background grid for 3D effect */}
+      {/* Background grid for retro effect */}
       <div className="absolute inset-0" style={{
-        background: 'linear-gradient(rgba(30,30,30,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(30,30,30,0.3) 1px, transparent 1px)',
-        backgroundSize: `${TILE_SIZE}px ${TILE_SIZE}px`,
-        transform: 'translateZ(-10px)',
+        background: 'linear-gradient(rgba(0,50,0,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,50,0,0.2) 1px, transparent 1px)',
+        backgroundSize: `${TILE_SIZE/2}px ${TILE_SIZE/2}px`,
         zIndex: -1
       }}></div>
 
@@ -70,132 +66,91 @@ interface MapTileProps {
 const MapTile = ({ symbol, x, y, isPlayer, player, enemy, timeElapsed }: MapTileProps) => {
   const tileRef = useRef<HTMLDivElement>(null);
 
-  // Position and size with 3D effect
+  // Position and size
   const tileStyle = {
     width: `${TILE_SIZE}px`,
     height: `${TILE_SIZE}px`,
     left: `${x * TILE_SIZE}px`,
     top: `${y * TILE_SIZE}px`,
-    transform: `translateZ(${isPlayer ? 15 : 0}px)`,
-    transition: 'transform 0.2s ease-out'
+    transition: 'transform 0.2s ease-out, background-color 0.2s ease'
   };
 
-  let tileClasses = "absolute flex items-center justify-center border border-game-tile-border bg-game-tile";
+  let tileClasses = "absolute flex items-center justify-center";
   let symbolElement = null;
   let symbolClasses = "math-symbol text-3xl";
 
-  // Handle different tile types with enhanced 3D
+  // Handle different tile types with retro ASCII art style
   if (isPlayer && player) {
-    // Player with 3D effect
-    tileClasses += " bg-game-player-bg border-game-player relative shadow-lg";
+    // Player
+    tileClasses += " bg-black border-2 border-green-500";
+    const pulseIntensity = Math.sin(timeElapsed * 0.01) * 0.2 + 0.8;
     symbolElement = (
-      <div className={`${symbolClasses} text-game-player`}
+      <div className={`${symbolClasses} text-green-400`}
            style={{ 
-             filter: 'drop-shadow(0 0 5px rgba(0, 255, 0, 0.7))',
-             textShadow: '0 0 10px rgba(0, 255, 0, 0.5)'
+             textShadow: `0 0 5px rgba(0, 255, 0, ${pulseIntensity})`,
            }}>
         {player.symbol}
-        <div className="absolute inset-0 blur-sm opacity-60"
-             style={{ filter: 'brightness(1.5)' }}>
-          {player.symbol}
-        </div>
       </div>
     );
   } else if (symbol === SYMBOLS.WALL) {
-    // Wall with 3D effect
-    tileClasses += " bg-game-wall-side border-none relative overflow-hidden";
+    // Wall with ASCII texture
+    tileClasses += " bg-black border border-blue-900";
     symbolElement = (
-      <div className="relative h-full w-full transform-gpu" 
-           style={{ transformStyle: 'preserve-3d' }}>
-        {/* Top face */}
-        <div className="absolute top-0 left-0 w-full h-1/4 bg-cyan-700 origin-bottom transform skew-x-45 -translate-y-1/2"></div>
-        
-        {/* Left face */}
-        <div className="absolute top-0 left-0 w-1/4 h-full bg-cyan-900 origin-right transform skew-y-45 -translate-x-1/2"></div>
-        
-        {/* Front face */}
-        <div className="absolute inset-[2px] bg-game-wall-face flex items-center justify-center"
-             style={{ boxShadow: 'inset 0 0 15px rgba(0, 255, 255, 0.3)' }}>
-          <span className={`${symbolClasses} text-white`}
-                style={{ textShadow: '0 0 5px rgba(255, 255, 255, 0.7)' }}>
-            {symbol}
-          </span>
-        </div>
+      <div className="text-blue-600 text-sm font-bold">
+        {x % 2 === y % 2 ? '█' : '▓'}
       </div>
     );
   } else if ([SYMBOLS.ITEM_INTEGRATE, SYMBOLS.ITEM_DIFFERENTIATE, SYMBOLS.ITEM_MULTIPLY].includes(symbol)) {
-    // Items with enhanced 3D and glow effects
+    // Items with blinking effect
     const bobOffset = Math.sin(timeElapsed * 0.003 + x) * 4;
-    const rotateY = Math.sin(timeElapsed * 0.002) * 15;
+    const blinkIntensity = Math.sin(timeElapsed * 0.01 + x * 0.7) * 0.3 + 0.7;
     
+    tileClasses += " bg-black border border-yellow-500";
     symbolElement = (
       <div 
-        className={`${symbolClasses} text-game-item relative`}
+        className={`${symbolClasses} text-yellow-500`}
         style={{ 
-          transform: `translateY(${bobOffset}px) rotateY(${rotateY}deg)`,
-          textShadow: '0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 255, 0, 0.5)',
+          transform: `translateY(${bobOffset}px)`,
+          textShadow: `0 0 5px rgba(255, 255, 0, ${blinkIntensity})`,
         }}
       >
-        {/* Glow effect */}
-        <div className="absolute inset-0 blur-md text-yellow-500 opacity-75"
-             style={{ filter: 'brightness(1.5)', transform: 'scale(1.2)' }}>
-          {symbol}
-        </div>
-        
-        {/* Inner glow */}
-        <div className="absolute inset-0 blur-sm text-white opacity-50">
-          {symbol}
-        </div>
-        
-        {/* Main symbol */}
         {symbol}
-        
-        {/* Light reflection */}
-        <div className="absolute top-0 left-1/2 w-1 h-full bg-white opacity-70 transform -translate-x-1/2"
-             style={{ 
-               clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0% 100%)',
-               animation: 'pulse 2s infinite'
-             }}>
-        </div>
       </div>
     );
   } else if ([SYMBOLS.ENEMY_ADD, SYMBOLS.ENEMY_SUBTRACT, SYMBOLS.ENEMY_MULTIPLY, SYMBOLS.ENEMY_DIVIDE].includes(symbol) && enemy) {
-    // Enemies with 3D and pulsing effects
+    // Enemies with pulsing effect
     const pulseOpacity = Math.abs(Math.sin(timeElapsed * 0.002)) * 0.4 + 0.4; // 0.4 to 0.8
-    const floatY = Math.sin(timeElapsed * 0.003 + x * 0.7) * 3;
     
-    let baseColor = "bg-game-enemy-add";
-    let textColor = "text-game-enemy-add";
-    let glowColor = "rgba(255, 0, 0, 0.7)";
+    let borderColor = "border-red-500";
+    let textColor = "text-red-500";
     
     if (symbol === SYMBOLS.ENEMY_SUBTRACT) {
-      baseColor = "bg-game-enemy-sub";
-      textColor = "text-game-enemy-sub";
-      glowColor = "rgba(128, 0, 0, 0.7)";
+      borderColor = "border-red-800";
+      textColor = "text-red-800";
     } else if (symbol === SYMBOLS.ENEMY_MULTIPLY) {
-      baseColor = "bg-game-enemy-mul";
-      textColor = "text-game-enemy-mul";
-      glowColor = "rgba(255, 0, 255, 0.7)";
+      borderColor = "border-purple-500";
+      textColor = "text-purple-500";
     } else if (symbol === SYMBOLS.ENEMY_DIVIDE) {
-      baseColor = "bg-game-enemy-div";
-      textColor = "text-game-enemy-div";
-      glowColor = "rgba(128, 0, 128, 0.7)";
+      borderColor = "border-purple-800";
+      textColor = "text-purple-800";
     }
     
-    tileClasses += ` ${baseColor} opacity-${Math.round(pulseOpacity * 100)} shadow-lg`;
+    tileClasses += ` bg-black border-2 ${borderColor}`;
     symbolElement = (
-      <div className={`${symbolClasses} ${textColor} relative`}
+      <div className={`${symbolClasses} ${textColor}`}
            style={{ 
-             transform: `translateY(${floatY}px)`,
-             textShadow: `0 0 10px ${glowColor}, 0 0 20px ${glowColor}`
+             opacity: pulseOpacity,
+             textShadow: `0 0 5px currentColor`,
            }}>
-        {/* Glow effect */}
-        <div className="absolute inset-0 blur-md opacity-70">
-          {symbol}
-        </div>
-        
-        {/* Main symbol */}
         {symbol}
+      </div>
+    );
+  } else {
+    // Empty space
+    tileClasses += " bg-black";
+    symbolElement = (
+      <div className="text-gray-800 opacity-30">
+        {x % 3 === 0 && y % 3 === 0 ? '·' : ' '}
       </div>
     );
   }

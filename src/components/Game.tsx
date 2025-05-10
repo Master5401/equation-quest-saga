@@ -46,12 +46,31 @@ const Game = () => {
       let dy = 0;
       
       switch (e.key) {
-        case "ArrowUp":    dy = -1; break;
-        case "ArrowDown":  dy = 1; break;
-        case "ArrowLeft":  dx = -1; break;
-        case "ArrowRight": dx = 1; break;
-        case "Escape":     window.location.reload(); break;
-        default: break;
+        case "ArrowUp":
+        case "w":
+        case "W":
+          dy = -1; 
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          dy = 1; 
+          break;
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          dx = -1; 
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          dx = 1; 
+          break;
+        case "Escape":
+          window.location.reload(); 
+          break;
+        default: 
+          break;
       }
       
       if (dx !== 0 || dy !== 0) {
@@ -98,7 +117,7 @@ const Game = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-hidden bg-game-floor flex flex-col items-center">
+    <div className="w-full h-screen overflow-hidden bg-black flex flex-col items-center font-mono">
       {gameData.state === GameState.TITLE_SCREEN && (
         <TitleScreen onStartGame={handleStartGame} />
       )}
@@ -114,7 +133,12 @@ const Game = () => {
             />
           </div>
           
-          <Message text={gameData.message} timer={gameData.messageTimer} />
+          {/* Retro style message */}
+          {gameData.message && gameData.messageTimer > 0 && (
+            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black border border-green-500 px-4 py-2 text-green-400">
+              {gameData.message}
+            </div>
+          )}
           
           {gameData.state === GameState.PUZZLE && (
             <PuzzleOverlay 
@@ -140,9 +164,9 @@ const Game = () => {
       />
       
       {/* Controls Help */}
-      {gameData.state !== GameState.TITLE_SCREEN && (
-        <div className="fixed bottom-2 left-2 text-gray-300 text-sm">
-          Controls: Arrows | ESC: Quit Game
+      {gameData.state === GameState.PLAYING && (
+        <div className="fixed bottom-2 left-2 text-green-500 text-xs">
+          CONTROLS: [↑ W] [← A] [↓ S] [→ D] | ESC: QUIT
         </div>
       )}
     </div>

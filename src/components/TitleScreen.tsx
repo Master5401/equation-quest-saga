@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface TitleSymbol {
@@ -23,8 +24,8 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onStartGame }) => {
   useEffect(() => {
     const symbolChars = ["∑", "∏", "∆", "√", "∞", "∫", "≠", "≤", "≥", "±", "÷", "×", "ƒ", "∂", "∇"];
     const colors = [
-      "text-red-500", "text-green-500", "text-blue-500", "text-cyan-500", 
-      "text-purple-500", "text-yellow-500", "text-pink-500"
+      "text-green-500", "text-green-400", "text-cyan-500", "text-cyan-400", 
+      "text-blue-500", "text-blue-400", "text-yellow-500", "text-yellow-400"
     ];
     
     const newSymbols: TitleSymbol[] = [];
@@ -101,22 +102,14 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onStartGame }) => {
   
   return (
     <div 
-      className="w-full h-screen flex flex-col items-center justify-center bg-black overflow-hidden" 
+      className="w-full h-screen flex flex-col items-center justify-center bg-black overflow-hidden font-mono" 
       onClick={handleClick}
       tabIndex={0}
     >
-      {/* 3D Grid Effect */}
+      {/* Retro Grid Background */}
       <div className="absolute inset-0">
-        <div className="absolute w-full h-full bg-[linear-gradient(transparent_0%,_rgba(255,_0,_255,_0.1)_10%,_rgba(255,_0,_255,_0.1)_90%,_transparent_100%)] bg-[length:50px_50px]"
-             style={{
-               transform: "perspective(1000px) rotateX(60deg) translateZ(-100px) scale(2)",
-               transformOrigin: "center center"
-             }}></div>
-        <div className="absolute w-full h-full bg-[linear-gradient(90deg,_transparent_0%,_rgba(255,_0,_255,_0.1)_10%,_rgba(255,_0,_255,_0.1)_90%,_transparent_100%)] bg-[length:50px_50px]"
-             style={{
-               transform: "perspective(1000px) rotateX(60deg) translateZ(-100px) scale(2)",
-               transformOrigin: "center center"
-             }}></div>
+        <div className="absolute w-full h-full bg-[linear-gradient(transparent_0%,_rgba(0,_255,_0,_0.05)_10%,_rgba(0,_255,_0,_0.05)_90%,_transparent_100%)] bg-[length:20px_20px]"></div>
+        <div className="absolute w-full h-full bg-[linear-gradient(90deg,_transparent_0%,_rgba(0,_255,_0,_0.05)_10%,_rgba(0,_255,_0,_0.05)_90%,_transparent_100%)] bg-[length:20px_20px]"></div>
       </div>
       
       {/* Floating Symbols */}
@@ -128,29 +121,48 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onStartGame }) => {
             left: `${symbol.x}%`,
             top: `${symbol.y}%`,
             fontSize: `${symbol.size}px`,
-            transform: `rotateX(${symbol.rotation}deg) rotateY(${symbol.rotation * 0.7}deg) translateZ(0px)`,
             opacity: symbol.opacity,
-            textShadow: '0 0 10px currentColor'
+            textShadow: '0 0 5px currentColor'
           }}
         >
           {symbol.char}
         </div>
       ))}
       
-      <h1 className="text-4xl md:text-7xl font-bold mb-8 text-cyan-400 relative z-10"
+      {/* ASCII Art Title */}
+      <pre className="text-green-500 text-sm md:text-base mb-4 leading-tight">
+{`
+ ▄▄▄▄▄▄▄ ▄    ▄ ▄▄▄▄▄▄▄               
+ █       █    █ █       █       ▀▀█    
+ █▄▄▄▄▄  █    █ █    ▄▄▄█        █    
+       █ █    █ █   █▄▄▄  ▄▄▄    █    
+ █▄▄▄▄▄█ █▄▄▄▄█ █    ▄▄▄█       █     
+                                █      
+ ▄    ▄ ▄▄▄▄▄▄  ▄▄▄▄▄▄   ▄▄▄▄▄▄█ ▄▄▄▄▄▄  ▄▄▄▄▄▄  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ 
+ █    █ █      █      █ █       █      ██      ██       █       █       █
+ █    █ █      █      █ █       █▄▄▄▄   █      ██▄▄▄▄▄  █    ▄▄▄█    ▄▄▄█
+ █    █ █      █      █ █           █▄▄ █      ██▄▄▄▄▄█ █   █▄▄▄█   █▄▄▄ 
+ █▄▄▄▄█ █▄▄▄▄▄▄█▄▄▄▄▄▄█ █▄▄▄▄▄▄▄ ▄▄▄▄▄█ █▄▄▄▄▄██      ▄█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█
+`}
+      </pre>
+      
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-green-400 relative z-10 px-4 text-center"
           style={{ 
-            textShadow: '0 0 20px #0ff, 0 0 40px rgba(0, 255, 255, 0.5)',
-            transform: 'perspective(500px) rotateX(10deg)'
+            textShadow: '0 0 10px #00FF00, 0 0 20px rgba(0, 255, 0, 0.5)',
           }}>
         The Variables of Destiny
       </h1>
       
-      {/* Story Box */}
+      {/* Story Box with retro terminal appearance */}
       <div className="w-5/6 md:w-3/4 lg:w-2/3 mb-6 relative">
-        <div className="absolute inset-0 blur-xl bg-purple-900/30 rounded-xl transform scale-110"></div>
-        <div className="relative bg-black/70 backdrop-blur-sm border border-purple-700 p-6 rounded-lg shadow-lg"
-             style={{ transform: 'perspective(1000px) rotateX(5deg)' }}>
-          <div className="text-sm md:text-base text-white space-y-3">
+        <div className="relative bg-black border-2 border-green-500 p-4 md:p-6 font-mono text-green-400 rounded">
+          <div className="border-b border-green-500 mb-4 pb-2 flex items-center">
+            <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+            <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <div className="ml-2 opacity-70">terminal@numerica:~$</div>
+          </div>
+          <div className="text-sm md:text-base space-y-3 leading-relaxed" style={{textShadow: '0 0 5px rgba(0, 255, 0, 0.5)'}}>
             <p>You were just a 21-year-old student, struggling to finish a late-night math assignment.</p>
             <p>The final problem was strange — something about dividing by zero. You hesitated... then did it anyway.</p>
             <p>Suddenly, reality fractured. Your screen flickered. Symbols bled from your notebook. The walls twisted into graphs and spirals. And then — silence.</p>
@@ -161,8 +173,18 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onStartGame }) => {
         </div>
       </div>
       
-      <div className="mt-2 text-xl text-white animate-pulse">
+      <div className="mt-2 text-xl text-green-500 animate-pulse">
         Press any key to begin
+      </div>
+      
+      {/* Retro ASCII Footer */}
+      <div className="absolute bottom-4 text-green-600 text-xs opacity-60">
+        <pre>{`
++===========================================+
+|    (c)2025 LOVABLE INTERACTIVE SYSTEMS    |
+|             ALL RIGHTS RESERVED           |
++===========================================+
+        `}</pre>
       </div>
     </div>
   );

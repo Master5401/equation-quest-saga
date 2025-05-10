@@ -16,12 +16,12 @@ const PuzzleOverlay = ({ level, onSubmitAnswer, onAnswerChange }: PuzzleOverlayP
   if (!enemy) return null;
 
   // Determine enemy color class
-  let enemyColorClass = "";
+  let enemyColor = "text-red-500 border-red-500";
   switch (enemy.symbol) {
-    case "+": enemyColorClass = "text-game-enemy-add"; break;
-    case "-": enemyColorClass = "text-game-enemy-sub"; break;
-    case "×": enemyColorClass = "text-game-enemy-mul"; break;
-    case "÷": enemyColorClass = "text-game-enemy-div"; break;
+    case "+": enemyColor = "text-red-500 border-red-500"; break;
+    case "-": enemyColor = "text-red-800 border-red-800"; break;
+    case "×": enemyColor = "text-purple-500 border-purple-500"; break;
+    case "÷": enemyColor = "text-purple-800 border-purple-800"; break;
   }
 
   // Handle keydown events
@@ -41,32 +41,82 @@ const PuzzleOverlay = ({ level, onSubmitAnswer, onAnswerChange }: PuzzleOverlayP
   };
 
   return (
-    <div className="fixed inset-0 z-30 bg-black bg-opacity-80 flex items-center justify-center p-4">
-      <div className="bg-blue-900 border-4 border-cyan-400 rounded-lg p-8 w-full max-w-md text-center relative">
-        {/* Enemy symbol */}
-        <div className="text-5xl font-bold mb-8 math-symbol animate-pulse">
-          <span className={enemyColorClass}>{enemy.symbol}</span>
+    <div className="fixed inset-0 z-30 bg-black bg-opacity-90 flex items-center justify-center p-4 font-mono">
+      <div className="bg-black border-2 border-cyan-500 p-6 w-full max-w-md text-center relative">
+        {/* Terminal header */}
+        <div className="border-b border-cyan-500 mb-6 pb-2 flex items-center">
+          <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+          <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+          <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
+          <div className="ml-2 opacity-70 text-cyan-400">enemy-encounter.exe</div>
         </div>
         
+        {/* ASCII art representation */}
+        <pre className={`mb-6 ${enemyColor}`}>
+{enemy.symbol === "+" ? `
+   ▄▄▄▄▄
+   █   █
+ ▄▄█▄▄▄█▄▄
+ █   █   █
+ ███████████
+   █   █
+   █▄▄▄█
+` : enemy.symbol === "-" ? `
+   
+   
+ ▄▄▄▄▄▄▄▄▄
+ █████████
+ ▀▀▀▀▀▀▀▀▀
+   
+   
+` : enemy.symbol === "×" ? `
+ █     █
+  █   █
+   █ █
+    █
+   █ █
+  █   █
+ █     █
+` : `
+      █
+      █
+      █
+ ▄▄▄▄▄█▄▄▄▄▄
+      █
+      █
+      █
+`}
+        </pre>
+        
         {/* Puzzle text */}
-        <div className="text-3xl font-mono text-white mb-8">
+        <div className="text-3xl font-mono text-cyan-400 mb-8">
           {puzzleText}
         </div>
         
         {/* Answer input */}
         <div className="relative mb-8">
+          <div className="mb-2 text-xs text-cyan-400 opacity-70">ENTER ANSWER:</div>
           <input
             type="text"
             value={userAnswer}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            className="bg-gray-200 text-black text-2xl font-mono py-3 px-4 w-full rounded-md text-center"
+            className="bg-black text-cyan-400 text-2xl font-mono py-3 px-4 w-full text-center border-2 border-cyan-500"
             autoFocus
+            style={{caretColor: 'cyan'}}
           />
         </div>
         
+        {/* Submit button */}
+        <button 
+          onClick={onSubmitAnswer}
+          className="bg-black border-2 border-cyan-500 hover:bg-cyan-900 text-cyan-400 px-8 py-2"
+        >
+          [ SOLVE ]
+        </button>
+        
         {/* Instructions */}
-        <div className="text-gray-300 text-sm">
+        <div className="text-cyan-300 opacity-60 text-sm mt-4">
           Type answer and press Enter. ESC to quit.
         </div>
       </div>
