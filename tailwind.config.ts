@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				game: {
+					'floor': '#1e1e1e',
+					'tile': '#3c3c3c',
+					'tile-border': '#808080',
+					'wall-face': '#00ffff',
+					'wall-side': '#008b8b',
+					'player': '#00ff00',
+					'player-bg': '#006400',
+					'item': '#ffff00',
+					'enemy-add': '#ff0000',
+					'enemy-sub': '#800000',
+					'enemy-mul': '#ff00ff',
+					'enemy-div': '#800080',
+					'hud': '#28283c',
 				}
 			},
 			borderRadius: {
@@ -84,11 +100,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'pulse': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.6' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 2s ease-in-out infinite',
+				'pulse': 'pulse 2s ease-in-out infinite',
 			}
 		}
 	},

@@ -1,6 +1,9 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 @layer base {
   :root {
@@ -97,5 +100,12 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Courier Prime', monospace;
+  }
+}
+
+@layer components {
+  .math-symbol {
+    @apply font-bold select-none;
   }
 }
