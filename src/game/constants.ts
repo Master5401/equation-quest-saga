@@ -27,6 +27,8 @@ export const SYMBOLS = {
   ENEMY_SUBTRACT: "-",
   ENEMY_MULTIPLY: "×",
   ENEMY_DIVIDE: "÷",
+  ENEMY_INTEGRATE: "∫",
+  ENEMY_DERIVATIVE: "∂",
   EMPTY: " "
 };
 
@@ -52,5 +54,28 @@ export const COLORS = {
   MEDIUM_GRAY: "#3C3C3C"
 };
 
-// Title screen symbols
-export const TITLE_SYMBOLS = ["∑", "∏", "∆", "√", "∞", "∫", "≠", "≤", "≥", "±", "÷", "×", "ƒ", "∂", "∇"];
+// Title screen symbols - expanded math symbols
+export const TITLE_SYMBOLS = [
+  "∑", "∏", "∆", "√", "∞", "∫", "≠", "≤", "≥", "±", "÷", "×", "ƒ", "∂", "∇", 
+  "π", "θ", "λ", "Ω", "Ψ", "∀", "∃", "∴", "∵", "∈", "⊂", "∪", "∩", "α", "β",
+  "γ", "δ", "ε", "ζ", "η", "κ", "μ", "σ", "τ", "φ", "χ"
+];
+
+// Mathematical formulas for easter eggs
+export const MATH_FORMULAS = [
+  "E = mc²",
+  "F = G(m₁m₂)/r²",
+  "eiπ + 1 = 0",
+  "∇ × E = -∂B/∂t",
+  "∫₀^∞ e^(-x²) dx = √π/2",
+  "(a+b)² = a² + 2ab + b²",
+  "limₓ→₀ sin(x)/x = 1",
+  "∫eˣ dx = eˣ + C"
+];
+
+// Game difficulty scaling factors
+export const DIFFICULTY = {
+  HEALTH_PENALTY: (level: number) => Math.min(5 + level * 3, 25),
+  SCORE_REWARD: (level: number) => 50 + level * 10,
+  PUZZLE_TIMER: (level: number) => Math.max(30 - level * 3, 15)
+};
