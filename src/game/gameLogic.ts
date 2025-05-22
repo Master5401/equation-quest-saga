@@ -156,7 +156,13 @@ export const checkPuzzleAnswer = (gameData: GameData): GameData => {
   const { userAnswer, puzzleAnswer } = level;
   
   try {
-    if (parseInt(userAnswer) === puzzleAnswer) {
+    // Fix here: Convert puzzleAnswer to string for comparison if it's a number
+    // or use Number(userAnswer) if puzzleAnswer is expected to be a number
+    // This ensures consistent type comparison
+    const parsedUserAnswer = Number(userAnswer);
+    
+    // Check if the answer is correct by comparing as numbers
+    if (!isNaN(parsedUserAnswer) && (typeof puzzleAnswer === 'number' ? parsedUserAnswer === puzzleAnswer : false)) {
       // Answer is correct
       const enemyKey = posToKey(level.currentEnemy.position);
       const updatedMap = [...level.map];
